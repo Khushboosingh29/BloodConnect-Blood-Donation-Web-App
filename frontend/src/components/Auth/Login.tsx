@@ -9,7 +9,11 @@ interface LoginForm {
   password: string;
 }
 
-const Login: React.FC = () => {
+interface LoginProps {
+  onSwitchToRegister: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onSwitchToRegister }) => {
   const [userType, setUserType] = useState<"user" | "hospital">("user");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -101,6 +105,24 @@ const Login: React.FC = () => {
           </button>
         </form>
 
+        <p style={{ textAlign: "center", margin: "1rem 0 0" }}>
+          Don't have an account?{" "}
+          <button
+            type="button"
+            onClick={onSwitchToRegister}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#dc2626",
+              fontWeight: 600,
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            Register
+          </button>
+        </p>
+
         <div className="demo-credentials">
           <h3>Demo Credentials:</h3>
           <div className="demo-section">
@@ -116,7 +138,7 @@ const Login: React.FC = () => {
         </div>
       </div>
       <div className="extra">
-        <p>&#169;Made by Tejas Sharma</p>
+        <p>&#169;Made by khushboo</p>
       </div>
     </div>
   );
