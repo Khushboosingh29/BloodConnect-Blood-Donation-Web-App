@@ -54,13 +54,20 @@ const sampleHospitals = [
   },
 ];
 
+
 async function seedBasicData() {
   try {
-    console.log("Seeding basic data...");
+    // Only seed if the database is empty (first run).
+    // This prevents wiping real user/hospital data on every server restart.
+    const existingUserCount = await User.countDocuments();
+    const existingHospitalCount = await Hospital.countDocuments();
 
-    // Clear existing data
-    await User.deleteMany({});
-    await Hospital.deleteMany({});
+    if (existingUserCount > 0 || existingHospitalCount > 0) {
+      console.log("Database already has data — skipping seed (data preserved).");
+      return;
+    }
+
+    console.log("Database is empty — seeding basic demo data for first run...");
 
     // Create sample users
     for (const userData of sampleUsers) {
