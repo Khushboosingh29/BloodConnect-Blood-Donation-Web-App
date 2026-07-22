@@ -11,12 +11,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Header from "./components/Layout/Header";
 import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import UserDashboard from "./components/Dashboard/UserDashboard";
 import HospitalDashboard from "./components/Dashboard/HospitalDashboard";
 import "./App.css";
 
 const AppContent: React.FC = () => {
   const { user, isLoading } = useAuth();
+  const [authView, setAuthView] = React.useState<"login" | "register">(
+    "login"
+  );
 
   if (isLoading) {
     return (
@@ -28,9 +32,12 @@ const AppContent: React.FC = () => {
   }
 
   if (!user) {
-    return <Login />;
+    return authView === "login" ? (
+      <Login onSwitchToRegister={() => setAuthView("register")} />
+    ) : (
+      <Register onSwitchToLogin={() => setAuthView("login")} />
+    );
   }
-
   return (
     <div className="app">
       <Header />
